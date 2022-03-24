@@ -47,15 +47,15 @@ jobs:
         run: |
           dir $GITHUB_WORKSPACE
           echo ---
-          dir $GITHUB_WORKSPACE/src
+          dir $GITHUB_WORKSPACE\src
           echo ---
-          dir $GITHUB_WORKSPACE/src/sdk/wxconfig
+          dir $GITHUB_WORKSPACE\src\sdk\wxconfig
       
       - name: Build the executable
         run: scons -C $GITHUB_WORKSPACE\src\sdk\wxconfig RELEASE=1
 
       - name: Checkout after
-        run: dir $GITHUB_WORKSPACE/src/sdk/wxconfig
+        run: dir $GITHUB_WORKSPACE\src\sdk\wxconfig
 
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
