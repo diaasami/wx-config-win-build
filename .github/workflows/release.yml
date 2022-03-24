@@ -39,14 +39,13 @@ jobs:
             mingw-w64-i686-make
     
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
     
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           repository: eranif/codelite
-          ref: 'refs/heads/master'
-          path: 'src'
+          path: src
 
       - name: Checkout the checkout
         run: |
