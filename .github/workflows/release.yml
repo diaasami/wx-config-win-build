@@ -48,8 +48,11 @@ jobs:
       - name: Checkout the checkout
         run: |
           ls $GITHUB_WORKSPACE
+          echo ---
           ls $GITHUB_WORKSPACE/src
+          echo ---
           cd $GITHUB_WORKSPACE/src/sdk/wxconfig
+          echo ---
           ls
       
       - name: Build the executable
@@ -57,7 +60,7 @@ jobs:
 
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          file_pattern: src
+          file_pattern: src/*
           commit_message: Updating to latest version
           skip_dirty_check: false
       
@@ -72,9 +75,7 @@ jobs:
           draft: false
           prerelease: false
           release_name: ${{ steps.date.outputs.date }}
-          #${{ steps.version.outputs.version }}
-          #tag_name: ${{ github.ref }}
-          commitish: ${{ github.sha }}
+          tag_name: ${{ github.ref }}
         env:
           GITHUB_TOKEN: ${{ github.token }}
     
