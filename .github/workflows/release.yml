@@ -57,7 +57,7 @@ jobs:
           ls
       
       - name: Build the executable
-        run: $GITHUB_WORKSPACE\build.bat $GITHUB_WORKSPACE\src\sdk\wxconfig\wx-config-win.cpp
+        run: $GITHUB_WORKSPACE\\build.bat $GITHUB_WORKSPACE\\src\\sdk\\wxconfig\\wx-config-win.cpp
 
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
