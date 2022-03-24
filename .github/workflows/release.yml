@@ -41,7 +41,7 @@ jobs:
           python-version: '3.x' # Version range or exact version of a Python version to use, using SemVer's version range syntax
       
       - name: Install scons
-      - run: python3 -m pip install scons
+        run: python3 -m pip install scons
       
       - name: Checkout the checkout
         run: |
