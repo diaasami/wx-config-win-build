@@ -58,7 +58,10 @@ jobs:
         continue-on-error: true
       
       - name: Build the executable
-        run: scons -C $env:GITHUB_WORKSPACE\src\sdk\wxconfig RELEASE=1
+        run: |
+          copy SConstruct $env:GITHUB_WORKSPACE\src\sdk\wxconfig
+          scons -C $env:GITHUB_WORKSPACE\src\sdk\wxconfig RELEASE=1
+          copy $env:GITHUB_WORKSPACE\src\sdk\wxconfig\wx-config-win.exe .
 
       - name: Checkout after
         run: dir $env:GITHUB_WORKSPACE\src\sdk\wxconfig
