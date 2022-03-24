@@ -43,12 +43,13 @@ jobs:
       - name: Install scons
         run: python3 -m pip install scons
       
+      #cmd /r dir %GITHUB_WORKSPACE% /s /b
       - name: Checkout the checkout
         run: |
-          cmd /r dir %GITHUB_WORKSPACE% /s /b
-          echo ---
+          dir %GITHUB_WORKSPACE%
+          echo ---------------
           dir %GITHUB_WORKSPACE%\src
-          echo ---
+          echo ---------------
           dir %GITHUB_WORKSPACE%\src\sdk\wxconfig
       
       - name: Build the executable
