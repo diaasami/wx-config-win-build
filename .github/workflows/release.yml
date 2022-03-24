@@ -45,22 +45,27 @@ jobs:
       
       #cmd /r dir %GITHUB_WORKSPACE% /s /b
       - name: Checkout the checkout
+        continue-on-error: true
         run: |
-          dir %GITHUB_WORKSPACE%
+          dir ${{ github.workspace }} 
           echo ---------------
-          dir %GITHUB_WORKSPACE%\src
+          dir ${{ github.workspace }}\src
           echo ---------------
-          dir %GITHUB_WORKSPACE%\src\sdk\wxconfig
+          dir ${{ github.workspace }}\src\sdk\wxconfig
+        
+      - name: Checkout2
+        run: dir $env:GITHUB_WORKSPACE
+        continue-on-error: true
       
       - name: Build the executable
-        run: scons -C %GITHUB_WORKSPACE%\src\sdk\wxconfig RELEASE=1
+        run: scons -C $env:GITHUB_WORKSPACE\src\sdk\wxconfig RELEASE=1
 
       - name: Checkout after
-        run: dir %GITHUB_WORKSPACE%\src\sdk\wxconfig
+        run: dir $env:GITHUB_WORKSPACE\src\sdk\wxconfig
 
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          file_pattern: "src\\*"
+          file_pattern: src/*
           commit_message: Updating to latest version
           skip_dirty_check: false
       
