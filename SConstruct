@@ -13,7 +13,7 @@ def GetCompiler(env):
 
 vars = Variables(None, ARGUMENTS)
 vars.Add('RELEASE', default=0)
-env = Environment(variables=vars, tools = ['mingw'], CPPDEFINES={'RELEASE_BUILD': '${RELEASE}'}, ENV = os.environ)
+env = Environment(variables=vars, CPPDEFINES={'RELEASE_BUILD': '${RELEASE}'}, ENV = os.environ)
 
 release = bool(ARGUMENTS['RELEASE'])
 buildResult = env.Program('wx-config-win.cpp')
