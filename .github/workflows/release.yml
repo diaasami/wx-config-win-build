@@ -45,7 +45,7 @@ jobs:
       
       - name: Checkout the checkout
         run: |
-          cmd /r %GITHUB_WORKSPACE% /s /b
+          cmd /r dir %GITHUB_WORKSPACE% /s /b
           echo ---
           dir %GITHUB_WORKSPACE%\src
           echo ---
