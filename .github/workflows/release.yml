@@ -44,6 +44,7 @@ jobs:
         with:
           repository: eranif/codelite
           path: src
+          clean: false
 
       - name: Checkout the checkout
         run: |
@@ -56,11 +57,11 @@ jobs:
           ls
       
       - name: Build the executable
-        run: $GITHUB_WORKSPACE/build.bat $GITHUB_WORKSPACE/src/sdk/wxconfig
+        run: $GITHUB_WORKSPACE\build.bat $GITHUB_WORKSPACE\src\sdk\wxconfig\wx-config-win.cpp
 
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          file_pattern: src/*
+          file_pattern: "src\\*"
           commit_message: Updating to latest version
           skip_dirty_check: false
       
