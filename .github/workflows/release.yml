@@ -19,22 +19,13 @@ jobs:
   build:
     # The type of runner that the job will run on
     runs-on: windows-latest
-    defaults:
-      run:
-        shell: msys2 {0}
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - name: Setup MSYS2
-        uses: msys2/setup-msys2@v2
+      - name: Install MSVC tools
+        uses: ilammy/msvc-dev-cmd@v1
         with:
-          msystem: mingw32
-          update: true
-          install: >-
-            mingw-w64-i686-binutils
-            mingw-w64-i686-gcc
-            mingw-w64-i686-gcc-libs
-            mingw-w64-i686-make
+          arch: amd64_x86
     
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
@@ -44,8 +35,14 @@ jobs:
         with:
           repository: eranif/codelite
           path: src
-          clean: false
-
+      
+      - uses: actions/setup-python@v3
+        with:
+          python-version: '3.x' # Version range or exact version of a Python version to use, using SemVer's version range syntax
+      
+      - name: Install scons
+      - run: python3 -m pip install scons
+      
       - name: Checkout the checkout
         run: |
           ls $GITHUB_WORKSPACE
@@ -57,7 +54,7 @@ jobs:
           ls
       
       - name: Build the executable
-        run: $GITHUB_WORKSPACE\build.sh $GITHUB_WORKSPACE/src/sdk/wxconfig/wx-config-win.cpp
+        run: scons -C $GITHUB_WORKSPACE/src/sdk/wxconfig RELEASE=1
 
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
