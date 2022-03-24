@@ -1,0 +1,93 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Regular release
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: msys2 {0}
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    
+      # Runs a single command using the runners shell
+      - name: Setup MSYS2
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: mingw32
+          update: true
+          install: >-
+            mingw-w64-i686-binutils
+            mingw-w64-i686-gcc
+            mingw-w64-i686-gcc-libs
+            mingw-w64-i686-make
+    
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+    
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+        with:
+          repository: eranif/codelite
+          ref: 'refs/heads/master'
+          path: 'src'
+
+      - name: Checkout the checkout
+        run: |
+          ls $GITHUB_WORKSPACE
+          ls $GITHUB_WORKSPACE/src
+          cd $GITHUB_WORKSPACE/src/sdk/wxconfig
+          ls
+
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          file_pattern: src
+          commit_message: Updating to latest version
+          skip_dirty_check: false
+      
+      
+      - name: Build the executable
+        run: $GITHUB_WORKSPACE/build.sh $GITHUB_WORKSPACE/src/sdk/wxconfig
+      
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+      
+      - name: Create Github release
+        uses: actions/create-release@v1
+        id: create_release
+        with:
+          draft: false
+          prerelease: false
+          release_name: ${{ steps.date.outputs.date }}
+          #${{ steps.version.outputs.version }}
+          #tag_name: ${{ github.ref }}
+          commitish: ${{ github.sha }}
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+    
+      - name: upload artifact
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: wx-config.exe
+          asset_name: wx-config.exe
+          asset_content_type: application/exe
